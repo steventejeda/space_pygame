@@ -5,6 +5,9 @@ WIDTH, HEIGHT = 900, 500
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("First Game!")
 WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+BORDER = pygame.Rect(WIDTH / 2 - 5, 0, 10, HEIGHT)
+
 FPS = 60
 VELOCITY = 5
 # Space ship dimensions
@@ -17,9 +20,30 @@ RED_SPACESHIP = pygame.transform.rotate(pygame.transform.scale(RED_SPACESHIP_IMA
 
 def draw_window(red, yellow):
     WIN.fill(WHITE)
+    pygame.draw.rect(WIN, BLACK, BORDER)
     WIN.blit(YELLOW_SPACESHIP, (yellow.x, yellow.y))
     WIN.blit(RED_SPACESHIP, (red.x, red.y))
     pygame.display.update()
+
+def handle_yellow_movement(keys_pressed, yellow):
+        if keys_pressed[pygame.K_a]: #LEFT
+            yellow.x -= VELOCITY
+        if keys_pressed[pygame.K_d]: #RIGHT
+            yellow.x += VELOCITY
+        if keys_pressed[pygame.K_w]: #UP
+            yellow.y -= VELOCITY
+        if keys_pressed[pygame.K_s]: #DOWN
+            yellow.y += VELOCITY
+            
+def handle_red_movement(keys_pressed, red):
+        if keys_pressed[pygame.K_LEFT]: #LEFT
+            red.x -= VELOCITY
+        if keys_pressed[pygame.K_RIGHT]: #RIGHT
+            red.x += VELOCITY
+        if keys_pressed[pygame.K_UP]: #UP
+            red.y -= VELOCITY
+        if keys_pressed[pygame.K_DOWN]: #DOWN
+            red.y += VELOCITY
 
 def main():
     red = pygame.Rect(700, 300, SPACESHIP_WIDTH, SPACESHIP_HEIGHT)
@@ -34,14 +58,8 @@ def main():
                 run = False
 
         keys_pressed = pygame.key.get_pressed()
-        if keys_pressed[pygame.K_a]: #LEFT
-            yellow.x -= VELOCITY
-        if keys_pressed[pygame.K_d]: #RIGHT
-            yellow.x += VELOCITY
-        if keys_pressed[pygame.K_w]: #UP
-            yellow.y -= VELOCITY
-        if keys_pressed[pygame.K_s]: #DOWN
-            yellow.y += VELOCITY
+        handle_yellow_movement(keys_pressed, yellow)
+        handle_red_movement(keys_pressed, red)
         
         draw_window(red, yellow)
         
